@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LoL ユニバース・ナビゲーター</title>
+  <meta name="description" content="League of Legends の全チャンピオンを地域別・五十音順で探索し、公式ユニバースのストーリーを読もう。">
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon"
+    href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>⚔️</text></svg>">
+</head>
+
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="header-inner">
+      <div class="logo">
+        <div class="logo-icon">⚔️</div>
+        <div class="logo-text">
+          <span class="logo-title">Universe Navigator</span>
+          <span class="logo-subtitle">League of Legends</span>
+        </div>
+      </div>
+      <div class="search-container">
+        <span class="search-icon">🔍</span>
+        <input type="text" id="searchInput" class="search-input" placeholder="チャンピオン名を検索..." autocomplete="off">
+        <button id="searchClear" class="search-clear" aria-label="検索をクリア">✕</button>
+      </div>
+      <div class="stats-bar">
+        <span id="champCount" class="stats-badge">0 Champions</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Region Navigation -->
+  <nav class="region-nav">
+    <div id="regionNav" class="region-nav-inner">
+      <!-- JS で動的に生成 -->
+    </div>
+  </nav>
+
+  <!-- Ad Slot -->
+  <div class="ad-slot-wrapper">
+    <div class="ad-slot">
+      <span class="ad-label">スポンサーリンク</span>
+      <div class="ad-content">
+        <!-- ADSENSE: 審査通過後、以下にAdSenseコードを貼り付けてください -->
+        <!-- <ins class="adsbygoogle" data-ad-client="ca-pub-XXXXXXXX" data-ad-slot="XXXXXXXX"></ins> -->
+        <div class="ad-placeholder">広告枠（AdSense設定後に表示されます）</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Main Layout -->
+  <div class="main-layout">
+    <!-- Main Content -->
+    <main class="main-content">
+      <div id="championsContainer">
+        <div class="loading">
+          <div class="loading-spinner"></div>
+          <div class="loading-text">チャンピオンを読み込んでいます...</div>
+        </div>
+      </div>
+    </main>
+
+    <!-- Comment Sidebar (PC) -->
+    <aside id="commentSidebar" class="comment-sidebar">
+      <div class="sidebar-header">
+        <h3 class="sidebar-title">💬 コメント</h3>
+      </div>
+      <div class="giscus-container">
+        <!-- GISCUS: 以下のscriptを差し替えてください -->
+        <script src="https://giscus.app/client.js" data-repo="syouma-kitagawa/lol-universe-navigator"
+          data-repo-id="R_kgDORnjN7A" data-category="General" data-category-id="DIC_kwDORnjN7M4C4b_p"
+          data-mapping="pathname" data-strict="0" data-reactions-enabled="1" data-emit-metadata="0"
+          data-input-position="bottom" data-theme="dark_dimmed" data-lang="ja" crossorigin="anonymous" async>
+          </script>
+      </div>
+    </aside>
+  </div>
+
+  <!-- Comment Drawer Toggle (Mobile) -->
+  <button id="commentDrawerToggle" class="comment-drawer-toggle" aria-label="コメントを開く">💬</button>
+
+  <!-- Comment Drawer Overlay (Mobile) -->
+  <div id="commentDrawerOverlay" class="comment-drawer-overlay"></div>
+
+  <!-- Relation Modal -->
+  <div id="relationModal" class="relation-modal">
+    <div id="modalOverlay" class="modal-overlay"></div>
+    <div class="modal-content">
+      <button id="modalClose" class="modal-close" aria-label="閉じる">✕</button>
+      <div class="modal-header">
+        <div class="modal-champ-info">
+          <div class="modal-icon-wrapper">
+            <img id="modalChampIcon" class="modal-champ-icon" src="" alt="">
+          </div>
+          <div class="modal-champ-details">
+            <h2 id="modalChampName" class="modal-champ-name"></h2>
+            <span id="modalChampRegion" class="modal-champ-region"></span>
+            <a id="modalStoryLink" class="modal-story-link" href="#" target="_blank" rel="noopener noreferrer">
+              🌐 ストーリーを読む
+            </a>
+          </div>
+        </div>
+      </div>
+      <div id="relationFilterBar" class="relation-filter-bar"></div>
+      <div class="modal-graph-wrapper">
+        <div id="graphContainer" class="graph-container"></div>
+        <div class="graph-hint">💡 ノードをドラッグして動かせます。別のチャンピオンをクリックすると中心が切り替わります。</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Scroll to Top -->
+  <button id="scrollTopBtn" class="scroll-top-btn" aria-label="トップへ戻る">↑</button>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <p>
+      LoL Universe Navigator —
+      公式情報は <a href="https://universe.leagueoflegends.com/ja_JP/" target="_blank" rel="noopener">League of Legends
+        Universe</a> をご覧ください。
+    </p>
+    <p style="margin-top: 4px; opacity: 0.6;">
+      本サイトは個人利用を目的としたファンツールです。Riot Games とは直接的な関係はありません。
+    </p>
+    <p style="margin-top: 4px; opacity: 0.4;">
+      © 2026 LoL Universe Navigator. データ提供: <a href="https://developer.riotgames.com/" target="_blank"
+        rel="noopener">Riot Games</a>
+    </p>
+  </footer>
+
+  <script src="https://d3js.org/d3.v7.min.js"></script>
+  <script src="champions.js"></script>
+  <script src="relations.js"></script>
+  <script src="app.js"></script>
+  <script src="graph.js"></script>
+</body>
+
+</html>
