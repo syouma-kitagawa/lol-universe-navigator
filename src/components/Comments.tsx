@@ -63,15 +63,24 @@ export default function Comments() {
       return;
     }
 
-    const { error } = await supabase
+    const { data, error } = await supabase
       .from("comments")
-      .insert([{ name: name.trim(), content: content.trim() }]);
+      .insert([{ name: name.trim(), content: content.trim() }])
+      .select();
 
     if (error) {
       console.error("Error inserting comment:", error);
       alert("投稿に失敗しました。");
     } else {
       setContent("");
+      // すぐに画面に反映させる（リアルタイム通信が遅延・未設定の場合の対策）
+      if (data && data[0]) {
+        setComments((prev) => {
+          // すでにリアルタイム通信で追加されている場合の重複を防ぐ
+          if (prev.find((c) => c.id === data[0].id)) return prev;
+          return [data[0] as Comment, ...prev];
+        });
+      }
     }
     
     setIsLoading(false);
